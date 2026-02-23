@@ -1,0 +1,19 @@
+[project]
+name = "ai-engineering-fundamentals"
+version = "0.1.0"
+description = "Step-by-step curriculum for learning applied AI Engineering."
+license = "MIT"
+authors = [
+    { name = "Medius Cortex" },
+    { name = "Francis Beeson", email = "francis@mediuscortex.com" },
+]
+requires-python = ">=3.13"
+dependencies = [
+    "anthropic",
+    "openai",
+    "pydantic>=2.0",
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
