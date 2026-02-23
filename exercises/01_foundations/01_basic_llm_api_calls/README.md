@@ -1,0 +1,35 @@
+# Lesson 1.1: Making Basic LLM API Calls
+
+## What You Will Learn
+
+The most fundamental building block of AI Engineering: sending a message to an LLM and receiving a response. This lesson covers the basic API call pattern for both Anthropic and OpenAI.
+
+## Key Differences Between Providers
+
+| Aspect | Anthropic | OpenAI |
+|---|---|---|
+| Client class | `Anthropic()` | `OpenAI()` |
+| Method | `client.messages.create()` | `client.responses.create()` |
+| `max_tokens` | Required | Not required |
+| Input format | `messages` list of role/content dicts | `input` string |
+| Response text | `response.content[0].text` | `response.output_text` |
+
+**Note on OpenAI APIs:** OpenAI's older Chat Completions API (`client.chat.completions.create()`) is still widely used and is the format that most provider-agnostic libraries (e.g. LiteLLM) standardise on. The Responses API used here is OpenAI's recommended API for new projects.
+
+## Prerequisites
+
+API keys for Anthropic and OpenAI must be configured in a `.env` file at the project root. See [RUNBOOK.md](../../../RUNBOOK.md) for setup instructions.
+
+## Running the Exercises
+
+```bash
+uv run exercises/01_foundations/01_basic_llm_api_calls/call_anthropic.py
+uv run exercises/01_foundations/01_basic_llm_api_calls/call_openai.py
+```
+
+## What This Lesson Does NOT Cover
+
+- System prompts (Lesson 1.2)
+- Structured output (Lesson 1.4)
+- Streaming (Lesson 1.5)
+- Error handling (Section 8)

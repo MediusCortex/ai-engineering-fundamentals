@@ -12,6 +12,7 @@ dependencies = [
     "anthropic",
     "openai",
     "pydantic>=2.0",
+    "python-dotenv",
     "pytest",
 ]
 

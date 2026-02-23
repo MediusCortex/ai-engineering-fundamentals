@@ -18,12 +18,22 @@ All exercises are grounded in a single use case: a customer service chatbot for 
 
 - Python 3.13+
 - [uv](https://docs.astral.sh/uv/) as the package manager
-- API keys for OpenAI and Anthropic
+- An Anthropic API key (get one at [console.anthropic.com](https://console.anthropic.com/))
+- An OpenAI API key (get one at [platform.openai.com](https://platform.openai.com/))
 
 ## Setup
 
-```bash
-uv sync
-```
+1. Install dependencies:
 
-See [RUNBOOK.md](RUNBOOK.md) for instructions on running exercises.
+    ```bash
+    uv sync
+    ```
+
+2. Create a `.env` file in the project root with your API keys:
+
+    ```bash
+    ANTHROPIC_API_KEY=sk-ant-your-key-here
+    OPENAI_API_KEY=sk-your-key-here
+    ```
+
+See [RUNBOOK.md](RUNBOOK.md) for detailed instructions on environment setup and running exercises.
