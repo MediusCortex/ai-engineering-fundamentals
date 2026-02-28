@@ -6,20 +6,41 @@
 # ]
 # ///
 
-from dotenv import load_dotenv
 from openai import OpenAI
+from openai.types.responses import Response
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
+class OpenAIClient:
+
+    def __init__(
+        self,
+        model: str,
+    ) -> None:
+        self.client: OpenAI = OpenAI()
+        self.model: str = model
+
+
+    def send_message(
+        self,
+        message: str,
+    ) -> str:
+        response: Response = self.client.responses.create(
+            model=self.model,
+            input=message,
+        )
+        response_text: str = response.output_text
+        return response_text
 
 
 def main() -> None:
-    load_dotenv()
-    client: OpenAI = OpenAI()
-    message: str = "What should I look for when choosing a marathon running shoe?"
-    response = client.responses.create(
-        model="gpt-4o-mini",
-        input=message,
-    )
-    response_text: str = response.output_text
-    print(response_text)
+        message: str = "What should I look for when choosing a marathon running shoe?"
+        client: OpenAIClient = OpenAIClient(model="gpt-5-nano")
+        response: str = client.send_message(message=message)
+        print(response)
 
 
 if __name__ == "__main__":
