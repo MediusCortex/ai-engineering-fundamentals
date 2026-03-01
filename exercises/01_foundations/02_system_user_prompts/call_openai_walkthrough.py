@@ -14,6 +14,7 @@ import json
 from dotenv import load_dotenv
 from openai import OpenAI
 from openai.types.responses import Response
+from openai.types.responses.response_input_item_param import ResponseInputItemParam
 
 load_dotenv()
 
@@ -42,7 +43,7 @@ system_prompt: str = (
 print("=====================\nSingle Turn with System Instructions:\n=====================\n")
 # The `instructions` parameter goes directly on the API call.
 # For a single turn, `input` can still be a simple string (as in Lesson 1.1).
-message: str = "What running shoes do you recommend for marathon training?"
+message: str = "What running shoes do you recommend for marathon training, and which is your top pick?"
 response: Response = client.responses.create(
     model="gpt-5-nano",
     instructions=system_prompt,
@@ -74,10 +75,11 @@ print("\n=====================\nMulti-turn Conversation:\n=====================\
 # For multi-turn, pass `input` as a list of role/content items instead of a string.
 # In production, you would manage this list carefully, applying truncation or
 # sliding window strategies when conversations grow long (covered in Lesson 1.6).
-conversation: list[dict[str, str]] = [
+follow_up_message: str = "Tell me more about the cushioning technology in your top pick."
+conversation: list[ResponseInputItemParam] = [
     {
         "role": "user",
-        "content": "What running shoes do you recommend for marathon training?",
+        "content": message,
     },
     {
         "role": "assistant",
@@ -85,7 +87,7 @@ conversation: list[dict[str, str]] = [
     },
     {
         "role": "user",
-        "content": "Tell me more about the cushioning technology in your top pick.",
+        "content": follow_up_message,
     },
 ]
 
@@ -119,7 +121,7 @@ print(f"```txt\n{multi_turn_text}\n```\n")
 print("\n=====================\nWithout Conversation History:\n=====================\n")
 # To demonstrate the stateless nature: send only the follow-up question
 # without any prior context. The model cannot know what "your top pick" means.
-isolated_message: str = "Tell me more about the cushioning technology in your top pick."
+isolated_message: str = follow_up_message
 response_no_history: Response = client.responses.create(
     model="gpt-5-nano",
     instructions=system_prompt,

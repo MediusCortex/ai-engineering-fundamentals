@@ -15,9 +15,9 @@ Each provider has two scripts:
 | `call_openai.py` | Clean, OOP reference implementation for OpenAI |
 | `call_openai_walkthrough.py` | Step-by-step exploration of system instructions and conversation history with OpenAI |
 
-**Clean scripts** (`call_*.py`) are minimal, production-style code using a client class that manages conversation history. Copy these into your own projects.
+**Clean scripts** (`call_*.py`) show the happy path: a client class that sets a system prompt and manages multi-turn conversation history. They are designed as reusable reference implementations you can copy into your own projects.
 
-**Walkthrough scripts** (`call_*_walkthrough.py`) are flat, line-by-line explorations with explanatory output. Run them once to understand how system prompts and conversation history work, or step through them in VSCode's interactive window (Shift+Enter).
+**Walkthrough scripts** (`call_*_walkthrough.py`) are the primary learning resources. They cover the same happy path as the clean scripts, then explore alternative scenarios (with vs without a system prompt, with vs without conversation history) and provider-specific features (Anthropic's assistant pre-filling). Run them once to build understanding, or step through them in VSCode's interactive window (Shift+Enter).
 
 ## Key Differences Between Providers
 

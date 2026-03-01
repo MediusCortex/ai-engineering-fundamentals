@@ -41,10 +41,11 @@ system_prompt: str = (
 print("=====================\nSingle Turn with System Prompt:\n=====================\n")
 # The `system` parameter goes directly on the API call, separate from `messages`.
 # The `messages` list contains only user and assistant turns.
+message: str = "What running shoes do you recommend for marathon training, and which is your top pick?"
 messages: list[MessageParam] = [
     {
         "role": "user",
-        "content": "What running shoes do you recommend for marathon training?",
+        "content": message,
     }
 ]
 
@@ -85,10 +86,11 @@ print("\n=====================\nMulti-turn Conversation:\n=====================\
 # We build the history by appending user and assistant messages after each turn.
 # In production, you would manage this list carefully, applying truncation or
 # sliding window strategies when conversations grow long (covered in Lesson 1.6).
+follow_up_message: str = "Tell me more about the cushioning technology in your top pick."
 conversation: list[MessageParam] = [
     {
         "role": "user",
-        "content": "What running shoes do you recommend for marathon training?",
+        "content": message,
     },
     {
         "role": "assistant",
@@ -96,7 +98,7 @@ conversation: list[MessageParam] = [
     },
     {
         "role": "user",
-        "content": "Tell me more about the cushioning technology in your top pick.",
+        "content": follow_up_message,
     },
 ]
 
@@ -128,7 +130,32 @@ multi_turn_text: str = multi_turn_block.text
 print(f"```txt\n{multi_turn_text}\n```\n")
 
 # =============================================================================
-# 7. Assistant pre-filling for output steering
+# 7. Without history, context is lost
+# =============================================================================
+print("\n=====================\nWithout Conversation History:\n=====================\n")
+# To demonstrate the stateless nature: send only the follow-up question
+# without any prior context. The model cannot know what "your top pick" means.
+isolated_message: str = follow_up_message
+response_no_history: Message = client.messages.create(
+    model="claude-haiku-4-5-20251001",
+    max_tokens=1024,
+    system=system_prompt,
+    messages=[
+        {
+            "role": "user",
+            "content": isolated_message,
+        }
+    ],
+)
+no_history_block = response_no_history.content[0]
+assert isinstance(no_history_block, TextBlock)
+response_text_no_history: str = no_history_block.text
+print(f"```txt\n{response_text_no_history}\n```\n")
+print("  ^ Without conversation history, the model has no context for 'your top pick'.")
+print("    The API is stateless: you must send the full conversation each time.\n")
+
+# =============================================================================
+# 8. Assistant pre-filling for output steering
 # =============================================================================
 print("\n=====================\nAssistant Pre-filling:\n=====================\n")
 # Anthropic supports a unique technique: include a partial assistant message
@@ -161,3 +188,4 @@ full_response: str = "Here are three Acme Running shoes for beginners:\n\n1." + 
 print(f"```txt\n{full_response}\n```\n")
 print("  ^ The model continued from '1.' in the pre-filled assistant message.")
 print("    Pre-filling is useful for enforcing numbered lists, JSON output, or specific formats.\n")
+

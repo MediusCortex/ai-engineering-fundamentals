@@ -66,14 +66,14 @@ def main() -> None:
         system_prompt=system_prompt,
     )
     first_response: str = client.send_message(
-        message="What running shoes do you recommend for marathon training?"
+        message="What running shoes do you recommend for marathon training, and which is your top pick?"
     )
-    print(first_response)
+    print(f"FIRST RESPONSE:\n\n{first_response}\n")
     print()
     second_response: str = client.send_message(
         message="Tell me more about the cushioning technology in your top pick."
     )
-    print(second_response)
+    print(f"SECOND RESPONSE:\n\n{second_response}\n")
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@
 from dotenv import load_dotenv
 from openai import OpenAI
 from openai.types.responses import Response
+from openai.types.responses.response_input_item_param import ResponseInputItemParam
 
 
 load_dotenv()
@@ -24,14 +25,14 @@ class OpenAIClient:
         self.client: OpenAI = OpenAI()
         self.model: str = model
         self.system_prompt: str = system_prompt
-        self.conversation_history: list[dict[str, str]] = []
+        self.conversation_history: list[ResponseInputItemParam] = []
 
 
     def send_message(
         self,
         message: str,
     ) -> str:
-        user_message: dict[str, str] = {
+        user_message: ResponseInputItemParam = {
             "role": "user",
             "content": message,
         }
@@ -42,7 +43,7 @@ class OpenAIClient:
             input=self.conversation_history,
         )
         response_text: str = response.output_text
-        assistant_message: dict[str, str] = {
+        assistant_message: ResponseInputItemParam = {
             "role": "assistant",
             "content": response_text,
         }
@@ -61,14 +62,14 @@ def main() -> None:
         system_prompt=system_prompt,
     )
     first_response: str = client.send_message(
-        message="What running shoes do you recommend for marathon training?"
+        message="What running shoes do you recommend for marathon training, and which is your top pick?"
     )
-    print(first_response)
+    print(f"FIRST RESPONSE:\n\n{first_response}\n")
     print()
     second_response: str = client.send_message(
         message="Tell me more about the cushioning technology in your top pick."
     )
-    print(second_response)
+    print(f"SECOND RESPONSE:\n\n{second_response}\n")
 
 
 if __name__ == "__main__":
